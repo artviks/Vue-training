@@ -15,7 +15,7 @@ class ToDoController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        $todos = ToDo::paginate(10);
+        $todos = ToDo::orderBy('created_at', 'desc')->paginate(10);
 
         return ToDoResource::collection($todos);
     }
@@ -28,9 +28,9 @@ class ToDoController extends Controller
      */
     public function store(Request $request)
     {
-        $todo = $request->isMethod('put') ? ToDo::findOrFail($request->todo_id) : new ToDo();
+        $todo = $request->isMethod('put') ? ToDo::findOrFail($request->id) : new ToDo();
 
-        $todo->id = $request->input('todo_id');
+        $todo->id = $request->input('id');
         $todo->title = $request->input('title');
         $todo->body = $request->input('body');
 
